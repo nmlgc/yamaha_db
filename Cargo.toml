@@ -1,0 +1,6 @@
+[package]
+name = "yamaha_db"
+version = "0.1.0"
+authors = ["nmlgc <nmlgc@nmlgc.net>"]
+
+[dependencies]
