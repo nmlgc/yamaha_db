@@ -10,11 +10,13 @@ pub struct Model {
 
 impl fmt::Display for Model {
 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		let mut total : VoiceCounts = Default::default();
 		try!(writeln!(f, "Yamaha {} ({}):", self.name, self.year));
 		for it in self.voicesets {
+			total += it.voicecount();
 			try!(write!(f, "{}", it));
 		}
-		Ok(())
+		writeln!(f, "{}", total)
 	}
 }
 

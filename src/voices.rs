@@ -6,6 +6,7 @@
 #![allow(non_upper_case_globals)]
 
 use std::fmt;
+use std::ops;
 
 pub struct Voice {
     msb: u8, // 0-based
@@ -15,6 +16,47 @@ pub struct Voice {
 }
 
 pub struct Voices(&'static [&'static Voice]);
+
+#[derive(Default)]
+pub struct VoiceCounts {
+	instruments: u16,
+	kits: u16,
+}
+
+impl VoiceCounts {
+	pub fn total(&self) -> u16 {
+		self.instruments + self.kits
+	}
+}
+
+impl ops::AddAssign for VoiceCounts {
+	fn add_assign(&mut self, other: VoiceCounts) {
+		self.instruments += other.instruments;
+		self.kits += other.kits;
+	}
+}
+
+impl fmt::Display for VoiceCounts {
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+		write!(f,
+			"Total number of voices: {} ({} instruments, {} kits)",
+			self.total(), self.instruments, self.kits
+		)
+	}
+}
+
+impl Voices {
+	pub fn voicecount(&self) -> VoiceCounts {
+		let mut ret : VoiceCounts = Default::default();
+		for it in self.0.iter() {
+			match it.msb {
+				127 => ret.kits += 1,
+				_ => ret.instruments += 1,
+			}
+		}
+		ret
+	}
+}
 
 impl fmt::Display for Voice {
 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
