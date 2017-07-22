@@ -23,3 +23,7 @@ impl fmt::Display for Model {
 pub static MU5: Model = Model {
 	name: "MU5", year: 1994, voicesets: &[&GM, &GSDrums]
 };
+
+pub static MU80: Model = Model {
+	name: "MU80", year: 1994, voicesets: &[&GM, &GSDrums, &XGLevel1]
+};
